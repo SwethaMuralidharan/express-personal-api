@@ -1,10 +1,90 @@
 body {
   color: #333;
   font-family: Helvetica, Arial, sans-serif;
-  background-color: skyblue; /* Sanity Check! */
+  /*background-color: skyblue; /* Sanity Check! */
 }
 
 h1 {
-  margin-top: 100px;
+  margin-top: 50px;
   text-align: center;
 }
+/*from portfolio start*/
+.container-fluid{
+  word-wrap: break-word;
+  background-color: #b0b0b0;
+}
+.content-div{
+  background-color: #E1CEB1;
+  padding:20px;
+  text-align:justify;
+  margin: 0 auto;
+  border-style: ridge;
+  border-radius:25px;
+  width:90%;
+}
+
+.color_14{
+  color:#606060;
+  line-height:1.2em;
+}
+.font_0 {
+    font: normal normal bold 38px/1.2em 'Noticia Text',serif;
+    color: #606060;
+    line-height:1.2em;
+}
+
+.font_6 {
+    font: normal normal normal 17px/1.2em 'Noticia Text',serif;
+    color: #606060;
+}
+.imgContent{
+  padding:30px 20px;
+  border-radius:50%;
+  /*float:left;*/
+  top: 30%;
+  left: 10%;
+  margin-top:40px;
+  margin-left:120px;
+}
+
+
+p{
+  text-align: left;
+  font-size: 30px;
+  font-family:'Sans serif';
+  font-style: italic;
+  font-weight: 400;
+  padding-top:40px;
+
+}
+/*.position{
+  position:absolute;
+
+}*/
+.projects{
+  text-align: center;
+  border:1px solid gray;
+  border-width: thick;
+  background-color: #b0b0b0;
+}
+
+h3{
+  text-decoration: underline;
+  font-weight: 400;
+  font-family: sans-serif;
+  font-style:oblique;
+
+}
+.h4_desc{
+  text-decoration: underline;
+  font-family: sans-serif;
+  font-weight:normal;
+  font-style:oblique;
+}
+a{
+  font-size: 20px;
+  font-style: italic;
+  padding-top: 20px;
+}
+
+/*end*/
