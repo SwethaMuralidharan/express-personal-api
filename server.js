@@ -52,13 +52,13 @@ app.get('/api', function apiIndex(req, res) {
     documentationUrl: "https://github.com/SwethaMuralidharan/express-personal-api/blob/master/README.md", // CHANGE ME
     baseUrl: "https://enigmatic-caverns-31537.herokuapp.com/", // CHANGE ME
     endpoints: [
-      {method: "GET", path: "/api", description: "Describes all available endpoints"},
-      {method: "GET", path: "/api/profile", description: "Data about me"}, // CHANGE ME
+      {method: "GET", path: "/api", description: "Describes all available endpoints"}, // done
+      {method: "GET", path: "/api/profile", description: "Data about me"}, // done
       {method: "GET", path: "/api/profile/:profile_id/places", description:"Places i have lived or is important to me."},
 
-      {method: "GET", path: "/api/profile/:profile_id/projects", decsription: "Describes all my projects."},
+      {method: "GET", path: "/api/profile/projects", decsription: "Describes all my projects."}, // done
       {method: "GET", path: "/api/profile/:profile_id/projects/:_id",description: "displays particular project info"},
-      {method: "POST",path: "/api/profile/:profile_id/projects",description:"creates new project"},
+      {method: "POST",path: "/api/profile/:profile_id/projects",description:"creates new project"}, //done
 
       {method: "GET", path: "/api/profile/:profile_id/holidaydestination",description:"destinations i've visited"},
       {method: "POST",path:"/api/profile/:profile_id/holidaydestination",description:"Creates an entry for vacations under planning"}
@@ -76,7 +76,34 @@ app.get('/api/profile', function show(req, res) {
   })
 });
 
-/* End point 3 - */
+/* End point 3 - Get All Projects */
+app.get('/api/profile/projects', function(req,res){
+  console.log("inside get projects", req);
+  db.Profile.find({},function(err,projects){
+    if(err){ console.log("Get All projects Method Error",err);}
+    res.json(projects);
+  })
+});
+
+/* End Point 4 - Create new project*/
+app.post('/api/profile/:profile_id/projects',function(req,res){
+  console.log(`inside create projects method ${req}`);
+  console.log(JSON.stringify(req.body));
+  db.Profile.findById(req.params.profile_id,function(err,foundProfile){
+
+  var newProject=new db.Projects(req.body);
+
+  foundProfile.projects.push(newProject);
+  foundProfile.save(function(err,savedprofile){
+    res.json(savedprofile);
+  })
+})
+});
+
+/* End Point 5 - Show one project by ID*/
+// app.get('/api/profile/:profile_id/projects/:_id')
+
+
 /**********
  * SERVER *
  **********/

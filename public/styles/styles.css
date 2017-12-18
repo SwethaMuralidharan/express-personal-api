@@ -14,15 +14,19 @@ h1 {
   background-color: #b0b0b0;
 }
 .content-div{
-  background-color: #E1CEB1;
-  padding:20px;
+  /*background-color: #E1CEB1;*/
+  padding:30px;
   text-align:justify;
   margin: 0 auto;
   border-style: ridge;
   border-radius:25px;
-  width:90%;
+
+
 }
 
+.p_spacing{
+  padding-top: 40px;
+}
 .color_14{
   color:#606060;
   line-height:1.2em;
@@ -32,7 +36,9 @@ h1 {
     color: #606060;
     line-height:1.2em;
 }
-
+button{
+  align:right;
+}
 .font_6 {
     font: normal normal normal 17px/1.2em 'Noticia Text',serif;
     color: #606060;
@@ -54,7 +60,7 @@ p{
   font-family:'Sans serif';
   font-style: italic;
   font-weight: 400;
-  padding-top:40px;
+  padding-top:10px;
 
 }
 /*.position{

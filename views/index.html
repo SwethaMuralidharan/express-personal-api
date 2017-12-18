@@ -4,14 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Blank</title>
+    <title>Personal Portfolio</title>
 
-    <!-- STYLESHEETS -->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/styles/styles.css">
 
     <!-- VENDOR SCRIPTS -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
     <!-- APPLICATION SCRIPTS -->
     <script src="/scripts/app.js"></script>
@@ -32,6 +36,7 @@
               <span class="color_14">Swetha Muralidharan</span></span></h1>
               <h4><a href="/api">Read My API Documentation</a></h4>
         </div>
+
       </div>
 
       <!-- /* Second Row : Role Name & navbar*/ -->
@@ -47,9 +52,53 @@
             </nav>
           </div>
       </div>
+      <hr>
+      <div id="addProject" class="row">
+        <form id="form1" action="" class="form-horizontal">
+               <legend>Add New Project</legend>
 
+          <div class="form-group">
+             <label class="col-md-4 control-label" for="name">Project Title</label>
+               <div class="col-md-4">
+                 <input id="name" name="name" type="text" class="form-control input-md" required="">
+               </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="Description">Description</label>
+            <div class="col-md-4">
+            <input id="textinput1" name="description" type="text" class="form-control input-md">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="ProjectURL">ProjectURL</label>
+            <div class="col-md-4">
+            <input id="textinput2" name="project_url" type="text" class="form-control input-md">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="ScreenshotURL">ScreenshotURL</label>
+            <div class="col-md-4">
+            <input id="textinput3" name="image_url" type="text" class="form-control input-md">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="ScreenshotURL"></label>
+            <div class="col-md-4">
+                <button class="btn btn-primary" type="submit"> Save New Project </button>
+            </div>
+          </div>
+
+          </form>
+      </div>
       <div id="results">
       </div>
     </div>
+
+
   </body>
 </html>
