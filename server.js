@@ -61,8 +61,8 @@ app.get('/api', function apiIndex(req, res) {
       {method: "DELETE", path:"/api/profile/:profile_id/projects/:_id", description:"deletes that project"},//done
       {method: "PUT", path:"/api/profile/:profile_id/projects/:_id", description:"Updates that project by ID"},//done
 
-      {method: "GET", path: "/api/profile/:profile_id/holidaydestination",description:"destinations i've visited"},
-      {method: "POST",path:"/api/profile/:profile_id/holidaydestination",description:"Creates an entry for vacations under planning"}
+      {method: "GET", path: "/api/profile/:profile_id/vacation",description:"destinations i've visited"},//done
+      {method: "POST",path:"/api/profile/:profile_id/vacation",description:"Creates an entry for vacations under planning"}
 
     ]
   })
@@ -146,6 +146,31 @@ app.put("/api/profile/:profile_id/projects/:_id",function update(req, res) {
     }
   });
 });
+
+// End Point 8 - Add New vacation under planning
+
+app.post('/api/profile/:profile_id/vacation',function(req,res){
+  console.log(JSON.stringify(req.body));
+  db.Profile.findById(req.params.profile_id,function(err,foundProfile){
+
+  var newVacation=new db.Vacation(req.body);
+
+  foundProfile.vacation.push(newVacation);
+  foundProfile.save(function(err,savedprofile){
+    res.json(savedprofile);
+  })
+})
+});
+
+//End Point 9 - Get All Holiday destinations
+
+app.get('/api/profile/:profile_id/vacation',function(req,res){
+  db.Profile.find({},function(err,vacation){
+    if(err){ console.log("Get All projects Method Error",err);}
+    res.json(vacation);
+  })
+})
+
 /**********
  * SERVER *
  **********/

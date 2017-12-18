@@ -1,13 +1,17 @@
 console.log("Sanity Check: JS is working!");
 
 $(document).ready(function(){
-  var $p_id;
+var $p_id;
+
 $("#addProject").fadeOut();
-  $('ul.nav li').click(function(){
+$("#addVacation").fadeOut();
+
+$('ul.nav li').click(function(){
+
     console.log("event fired");
     console.log($(this));
-   $(this).addClass('active');
-   $(this).siblings().removeClass('active');
+    $(this).addClass('active');
+    $(this).siblings().removeClass('active');
 
    if(($(this).context.textContent)=="About")
    {
@@ -49,6 +53,8 @@ $("#addProject").fadeOut();
      //projects section
 
      $("#addProject").fadeIn();
+     $("#addVacation").fadeOut();
+
      console.log("Projects section");
      $.ajax({
        method:"GET",
@@ -82,14 +88,14 @@ $("#addProject").fadeOut();
    else if(($(this).context.textContent)==="Vacation")
    {
     $("#addProject").fadeOut();
+    $("#addVacation").fadeIn();
+
     console.log("Vacation section");
     $.ajax({
       method:"GET",
-      url:'/api/profile/projects',
+      url:`/api/profile/${$p_id}/vacation`,
       success:function(data){
         console.log(data);
-        $p_id=data[0]._id;
-        console.log($p_id);
         $("#results").empty();
 
         console.log(data[0].vacation.length);
@@ -109,7 +115,6 @@ $("#addProject").fadeOut();
                <p> <h3> Place : ${data[0].vacation[i].place}</h3> </p>
                <p> <h3> Top Destination Points :</h3> <h4> ${data[0].vacation[i].topdestinationPoints} <h4> </p>
                <p> <h3> Travel Period :</h3> <h4> ${data[0].vacation[i].travelPeriod} <h4> </p>
-
                <hr>
              </div>
              </div>
@@ -134,11 +139,13 @@ $("#addProject").fadeOut();
    }
 
   });
+
+
   $('#form1').submit(function(){
     var url_link=`/api/profile/${$p_id}/projects`;
-    alert(url_link);
+
     var data=$(this).serialize();
-alert(data);
+
   $.ajax({
     method:'POST',
     url:url_link,
@@ -151,10 +158,33 @@ alert(data);
     }
   })
   });
-  function SaveNewProject(data){
-    alert("Saved Successfully");
 
+  $('#form2').submit(function(){
+    var url_link=`/api/profile/${$p_id}/vacation`;
+
+    var data=$(this).serialize();
+
+  $.ajax({
+    method:'POST',
+    url:url_link,
+    success:SaveNewVacationPlan,
+    data:data,
+    error:function(err){
+      if(err){
+        console.log("Error in posting new vacation plan",err)
+      }
+    }
+  })
+  });
+
+  function SaveNewVacationPlan(data){
+      alert("Saved New Vacation Plan Successfully");
   }
+
+  function SaveNewProject(data){
+    alert("Saved New Project Successfully");
+  }
+  
   $("#results").on('click', '.deleteBtn', function() {
   console.log("delete");
   var delete_link= `/api/profile/${$(this).attr('data-profileid')}/projects/${$(this).attr('data-projid')}`
