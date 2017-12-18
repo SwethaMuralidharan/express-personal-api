@@ -57,8 +57,9 @@ app.get('/api', function apiIndex(req, res) {
       {method: "GET", path: "/api/profile/:profile_id/places", description:"Places i have lived or is important to me."},
 
       {method: "GET", path: "/api/profile/projects", decsription: "Describes all my projects."}, // done
-      {method: "GET", path: "/api/profile/:profile_id/projects/:_id",description: "displays particular project info"},
+      {method: "GET", path: "/api/profile/:profile_id/projects/:_id",description: "displays particular project info"}, //done
       {method: "POST",path: "/api/profile/:profile_id/projects",description:"creates new project"}, //done
+      {method: "DELETE", path:"/api/profile/:profile_id/projects/:_id", description:"deletes that project"},
 
       {method: "GET", path: "/api/profile/:profile_id/holidaydestination",description:"destinations i've visited"},
       {method: "POST",path:"/api/profile/:profile_id/holidaydestination",description:"Creates an entry for vacations under planning"}
@@ -101,9 +102,29 @@ app.post('/api/profile/:profile_id/projects',function(req,res){
 });
 
 /* End Point 5 - Show one project by ID*/
-// app.get('/api/profile/:profile_id/projects/:_id')
+app.get('/api/profile/:profile_id/projects/:_id',function(req,res){
+  console.log("inside getbyID");
+  db.Profile.findById(req.params._id, function(err, foundproj) {
+    res.json(foundproj);
+  });
 
+})
 
+app.delete("/api/profile/:profile_id/projects/:_id",function destroy(req, res) {
+  db.Profile.findById(req.params.profile_id, function(err, foundproj) {
+    console.log(foundproj);
+    // we've got the album, now find the song within it
+    var correctProj = foundproj.projects.id(req.params._id);
+    if (correctProj) {
+      correctProj.remove();
+      // resave the album now that the song is gone
+      foundproj.save(function(err, saved) {
+        console.log('REMOVED ', correctProj.name);
+        res.json(correctProj);
+      });
+    }
+  });
+});
 /**********
  * SERVER *
  **********/

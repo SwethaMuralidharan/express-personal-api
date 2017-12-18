@@ -67,6 +67,17 @@ $("#addProject").fadeOut();
          console.log("ajax call failed for My Work",err);
        }
      })
+     var link=`/api/profile/${$p_id}/projects/:_id`
+     $.ajax({
+       method:'GET',
+       url:link,
+       success:function(data){
+         console.log(data);
+       },
+       error:function(err){
+         console.log(err);
+       }
+     })
    }
    if(($(this).context.textContent)==="Contact")
    {
@@ -85,6 +96,7 @@ $("#addProject").fadeOut();
              <p> <h3> Description :</h3> <h4> ${data[0].projects[i].description} <h4> </p>
              <p> <h4> <a href="${data[0].projects[i].project_url}"> Click Here for Project URL! </a>  </h4> </p>
              <p> <h4> <a href="${data[0].projects[i].image_url}" > Screenshot </a> </h4>  </p>
+             <button class="deleteBtn btn btn-danger pull-right" data-profileid=${data[0]._id} data-projid=${data[0].projects[i]._id}>Delete Project</button>
              <hr>
            </div>
            </div>
@@ -114,5 +126,20 @@ alert(data);
     alert("Saved Successfully");
 
   }
+  $("#results").on('click', '.deleteBtn', function() {
+  console.log("delete");
+  var delete_link= `/api/profile/${$(this).attr('data-profileid')}/projects/${$(this).attr('data-projid')}`
+  console.log(delete_link);
+    $.ajax({
+      method: 'DELETE',
+      url:delete_link,
+      success: function(data){
+        console.log("deleted data ",data);
+      },
+      error: function(err){
+        console.log(err);
+      }
+    });
+  })
 
 });
