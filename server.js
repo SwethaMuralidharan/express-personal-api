@@ -54,12 +54,12 @@ app.get('/api', function apiIndex(req, res) {
     endpoints: [
       {method: "GET", path: "/api", description: "Describes all available endpoints"}, // done
       {method: "GET", path: "/api/profile", description: "Data about me"}, // done
-      {method: "GET", path: "/api/profile/:profile_id/places", description:"Places i have lived or is important to me."},
 
       {method: "GET", path: "/api/profile/projects", decsription: "Describes all my projects."}, // done
       {method: "GET", path: "/api/profile/:profile_id/projects/:_id",description: "displays particular project info"}, //done
       {method: "POST",path: "/api/profile/:profile_id/projects",description:"creates new project"}, //done
-      {method: "DELETE", path:"/api/profile/:profile_id/projects/:_id", description:"deletes that project"},
+      {method: "DELETE", path:"/api/profile/:profile_id/projects/:_id", description:"deletes that project"},//done
+      {method: "PUT", path:"/api/profile/:profile_id/projects/:_id", description:"Updates that project by ID"},//done
 
       {method: "GET", path: "/api/profile/:profile_id/holidaydestination",description:"destinations i've visited"},
       {method: "POST",path:"/api/profile/:profile_id/holidaydestination",description:"Creates an entry for vacations under planning"}
@@ -110,16 +110,37 @@ app.get('/api/profile/:profile_id/projects/:_id',function(req,res){
 
 })
 
+/*End Point 6 - delete project by ID*/
 app.delete("/api/profile/:profile_id/projects/:_id",function destroy(req, res) {
   db.Profile.findById(req.params.profile_id, function(err, foundproj) {
     console.log(foundproj);
-    // we've got the album, now find the song within it
+
     var correctProj = foundproj.projects.id(req.params._id);
     if (correctProj) {
       correctProj.remove();
-      // resave the album now that the song is gone
+
       foundproj.save(function(err, saved) {
         console.log('REMOVED ', correctProj.name);
+        res.json(correctProj);
+      });
+    }
+  });
+});
+
+/* End Point 7 - update project*/
+app.put("/api/profile/:profile_id/projects/:_id",function update(req, res) {
+  db.Profile.findById(req.params.profile_id, function(err, foundProfile) {
+    var correctProj = foundProfile.projects.id(req.params._id);
+
+    if (correctProj) {
+
+      correctProj.name = req.body.name;
+      correctProj.description = req.body.description;
+      correctProj.project_url=req.body.project_url;
+      correctProj.image_url=req.body.image_url;
+
+      foundProfile.save(function(err, saved) {
+        console.log('UPDATED', correctProj);
         res.json(correctProj);
       });
     }

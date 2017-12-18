@@ -79,13 +79,42 @@ $("#addProject").fadeOut();
        }
      })
    }
-   if(($(this).context.textContent)==="Contact")
+   else if(($(this).context.textContent)==="Vacation")
    {
-     //contact section
+    $("#addProject").fadeOut();
+    console.log("Vacation section");
+    $.ajax({
+      method:"GET",
+      url:'/api/profile/projects',
+      success:function(data){
+        console.log(data);
+        $p_id=data[0]._id;
+        console.log($p_id);
+        $("#results").empty();
+
+        console.log(data[0].vacation.length);
+        renderAllVacation(data);
+
+      },
+      error: function(err){
+        console.log("ajax call failed for Vacation",err);
+      }
+    })
    }
-   if(($(this).context.textContent)==="Vacation")
-   {
-     //vacation destination section
+   function renderAllVacation(data){
+     for(i=0;i<data[0].vacation.length;i++){
+       $("#results").append(
+           ` <div class="row">
+             <div class="col-md-12 content-div">
+               <p> <h3> Place : ${data[0].vacation[i].place}</h3> </p>
+               <p> <h3> Top Destination Points :</h3> <h4> ${data[0].vacation[i].topdestinationPoints} <h4> </p>
+               <p> <h3> Travel Period :</h3> <h4> ${data[0].vacation[i].travelPeriod} <h4> </p>
+
+               <hr>
+             </div>
+             </div>
+        `)
+     }
    }
    function renderAllProjects(data){
      for(i=0;i<data[0].projects.length;i++){

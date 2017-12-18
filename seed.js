@@ -71,6 +71,18 @@ var db=require('./models');
          project_url:"https://github.com/SwethaMuralidharan/RacingGame",
          image_url:"https://github.com/SwethaMuralidharan/RacingGame"
        }
+     ],
+     vacation:[
+       {
+         place: "Colorado Springs",
+         topdestinationPoints:"Pikes Peak , Garden Of the GODs, Seven Falls.",
+         travelPeriod: "September 2017"
+       },
+       {
+         place: "Lake Tahoe",
+         topdestinationPoints:" The Lake Tahoe , Eagle Falls, Skiing Resorts ",
+         travelPeriod: "November 2017"
+       }
      ]
    });
    profile.save(function(err, savedprofile){
