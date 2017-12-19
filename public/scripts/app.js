@@ -1,35 +1,27 @@
 console.log("Sanity Check: JS is working!");
 
 $(document).ready(function(){
-var $p_id;
+  var $profile_id;
 
-$("#addProject").fadeOut();
-$("#addVacation").fadeOut();
+  $("#addProject").fadeOut();
+  $("#addVacation").fadeOut();
 
-$('ul.nav li').click(function(){
-
-    console.log("event fired");
-    console.log($(this));
+  $('ul.nav li').click(function(){
     $(this).addClass('active');
     $(this).siblings().removeClass('active');
 
-   if(($(this).context.textContent)=="About")
-   {
-     $("#addProject").fadeOut();
-     console.log("About section");
-     //about section
-     $.ajax({
+    if(($(this).context.textContent)=="About") {
+      $("#addProject").fadeOut();
+      $.ajax({
        method:"GET",
        url:'/api/profile',
-       success:function(data){
-         renderAbout(data);
-       },
+       success: renderAbout,
        error: function(err){
          console.log("ajax call failed for About Section",err);
        }
-     })
-     function renderAbout(data){
+      });
 
+      function renderAbout(data){
         $("#results").empty();
         $("#results").append(
          ` <div class="row">
@@ -47,67 +39,37 @@ $('ul.nav li').click(function(){
          `
        );
      }
-   }
-   else if(($(this).context.textContent)==="My Work")
-   {
-     //projects section
-
+    } else if(($(this).context.textContent)==="My Work") {
      $("#addProject").fadeIn();
      $("#addVacation").fadeOut();
-
-     console.log("Projects section");
      $.ajax({
        method:"GET",
-       url:'/api/profile/projects',
+       url:'/api/profile',
        success:function(data){
-         console.log(data);
-         $p_id=data[0]._id;
-         console.log($p_id);
-         $("#results").empty();
-
-         console.log(data[0].projects.length);
-         renderAllProjects(data);
-
+         renderAllProjects(data[0]);
        },
        error: function(err){
-         console.log("ajax call failed for My Work",err);
+         console.log("ajax call failed for About Section",err);
        }
-     })
-     var link=`/api/profile/${$p_id}/projects/:_id`
-     $.ajax({
-       method:'GET',
-       url:link,
-       success:function(data){
-         console.log(data);
-       },
-       error:function(err){
-         console.log(err);
-       }
-     })
-   }
-   else if(($(this).context.textContent)==="Vacation")
-   {
+      });
+   } else if(($(this).context.textContent)==="Vacation") {
     $("#addProject").fadeOut();
     $("#addVacation").fadeIn();
 
-    console.log("Vacation section");
     $.ajax({
       method:"GET",
-      url:`/api/profile/${$p_id}/vacation`,
+      url:`/api/profile/${$profile_id}/vacation`,
       success:function(data){
-        console.log(data);
-        $("#results").empty();
-
-        console.log(data[0].vacation.length);
         renderAllVacation(data);
-
       },
       error: function(err){
         console.log("ajax call failed for Vacation",err);
       }
     })
    }
+
    function renderAllVacation(data){
+    $("#results").empty();
      for(i=0;i<data[0].vacation.length;i++){
        $("#results").append(
            ` <div class="row">
@@ -121,16 +83,17 @@ $('ul.nav li').click(function(){
         `)
      }
    }
-   function renderAllProjects(data){
-     for(i=0;i<data[0].projects.length;i++){
+   function renderAllProjects(profile){
+    $("#results").empty();
+     for(i=0;i<profile.projects.length;i++){
      $("#results").append(
          ` <div class="row">
            <div class="col-md-12 content-div">
-             <p> <h3> Title : ${data[0].projects[i].name}</h3> </p>
-             <p> <h3> Description :</h3> <h4> ${data[0].projects[i].description} <h4> </p>
-             <p> <h4> <a href="${data[0].projects[i].project_url}"> Click Here for Project URL! </a>  </h4> </p>
-             <p> <h4> <a href="${data[0].projects[i].image_url}" > Screenshot </a> </h4>  </p>
-             <button class="deleteBtn btn btn-danger pull-right" data-profileid=${data[0]._id} data-projid=${data[0].projects[i]._id}>Delete Project</button>
+             <p> <h3> Title : ${profile.projects[i].name}</h3> </p>
+             <p> <h3> Description :</h3> <h4> ${profile.projects[i].description} <h4> </p>
+             <p> <h4> <a href="${profile.projects[i].project_url}"> Click Here for Project URL! </a>  </h4> </p>
+             <p> <h4> <a href="${profile.projects[i].image_url}" > Screenshot </a> </h4>  </p>
+             <button class="deleteBtn btn btn-danger pull-right" data-profileid=${profile._id} data-projid=${profile.projects[i]._id}>Delete Project</button>
              <hr>
            </div>
            </div>
@@ -142,14 +105,14 @@ $('ul.nav li').click(function(){
 
 
   $('#form1').submit(function(){
-    var url_link=`/api/profile/${$p_id}/projects`;
+    var url_link=`/api/profile/${$profile_id}/projects`;
 
     var data=$(this).serialize();
 
   $.ajax({
     method:'POST',
     url:url_link,
-    success:SaveNewProject,
+    success:saveNewProject,
     data:data,
     error:function(err){
       if(err){
@@ -160,14 +123,14 @@ $('ul.nav li').click(function(){
   });
 
   $('#form2').submit(function(){
-    var url_link=`/api/profile/${$p_id}/vacation`;
+    var url_link=`/api/profile/${$profile_id}/vacation`;
 
     var data=$(this).serialize();
 
   $.ajax({
     method:'POST',
     url:url_link,
-    success:SaveNewVacationPlan,
+    success: saveNewVacationPlan,
     data:data,
     error:function(err){
       if(err){
@@ -177,18 +140,16 @@ $('ul.nav li').click(function(){
   })
   });
 
-  function SaveNewVacationPlan(data){
+  function  saveNewVacationPlan(data){
       alert("Saved New Vacation Plan Successfully");
   }
 
-  function SaveNewProject(data){
+  function saveNewProject(data){
     alert("Saved New Project Successfully");
   }
   
   $("#results").on('click', '.deleteBtn', function() {
-  console.log("delete");
-  var delete_link= `/api/profile/${$(this).attr('data-profileid')}/projects/${$(this).attr('data-projid')}`
-  console.log(delete_link);
+    var delete_link= `/api/profile/${$(this).attr('data-profileid')}/projects/${$(this).attr('data-projid')}`;
     $.ajax({
       method: 'DELETE',
       url:delete_link,
