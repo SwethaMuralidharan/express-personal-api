@@ -90,4 +90,5 @@ var db=require('./models');
         return console.log(err);
       }
       console.log(savedprofile);
+      process.exit();
      });

@@ -55,14 +55,12 @@ app.get('/api', function apiIndex(req, res) {
       {method: "GET", path: "/api", description: "Describes all available endpoints"}, // done
       {method: "GET", path: "/api/profile", description: "Data about me"}, // done
 
-      {method: "GET", path: "/api/profile/projects", decsription: "Describes all my projects."}, // done
-      {method: "GET", path: "/api/profile/:profile_id/projects/:_id",description: "displays particular project info"}, //done
       {method: "POST",path: "/api/profile/:profile_id/projects",description:"creates new project"}, //done
       {method: "DELETE", path:"/api/profile/:profile_id/projects/:_id", description:"deletes that project"},//done
       {method: "PUT", path:"/api/profile/:profile_id/projects/:_id", description:"Updates that project by ID"},//done
 
-      {method: "GET", path: "/api/profile/:profile_id/vacation",description:"destinations i've visited"},//done
-      {method: "POST",path:"/api/profile/:profile_id/vacation",description:"Creates an entry for vacations under planning"}
+      {method: "GET", path: "/api/profile",description:"destinations i've visited"},//done
+      {method: "POST",path:"/api/profile/:profile_id/vacation",description:"Creates an entry for vacations under planning"}//done
 
     ]
   })
@@ -70,23 +68,14 @@ app.get('/api', function apiIndex(req, res) {
 
 /*End Point 2 - Get Profile Info*/
 app.get('/api/profile', function show(req, res) {
-  console.log("inside get profile",req.body);
+  console.log("Inside get profile",req.body);
   db.Profile.find({},function(err,new_profile){
-    if(err) { console.log(" new profile not exist", err)}
+    if(err) { console.log(" new profile does not exist", err)}
     res.json(new_profile);
   })
 });
 
-/* End point 3 - Get All Projects */
-app.get('/api/profile/projects', function(req,res){
-  console.log("inside get projects", req);
-  db.Profile.find({},function(err,projects){
-    if(err){ console.log("Get All projects Method Error",err);}
-    res.json(projects);
-  })
-});
-
-/* End Point 4 - Create new project*/
+/* End Point 3 - Create new project*/
 app.post('/api/profile/:profile_id/projects',function(req,res){
   console.log(`inside create projects method ${req}`);
   console.log(JSON.stringify(req.body));
@@ -101,16 +90,7 @@ app.post('/api/profile/:profile_id/projects',function(req,res){
 })
 });
 
-/* End Point 5 - Show one project by ID*/
-app.get('/api/profile/:profile_id/projects/:_id',function(req,res){
-  console.log("inside getbyID");
-  db.Profile.findById(req.params._id, function(err, foundproj) {
-    res.json(foundproj);
-  });
-
-})
-
-/*End Point 6 - delete project by ID*/
+/*End Point 4 - delete project by ID*/
 app.delete("/api/profile/:profile_id/projects/:_id",function destroy(req, res) {
   db.Profile.findById(req.params.profile_id, function(err, foundproj) {
     console.log(foundproj);
@@ -127,13 +107,12 @@ app.delete("/api/profile/:profile_id/projects/:_id",function destroy(req, res) {
   });
 });
 
-/* End Point 7 - update project*/
+/* End Point 5 - update project*/
 app.put("/api/profile/:profile_id/projects/:_id",function update(req, res) {
   db.Profile.findById(req.params.profile_id, function(err, foundProfile) {
     var correctProj = foundProfile.projects.id(req.params._id);
 
     if (correctProj) {
-
       correctProj.name = req.body.name;
       correctProj.description = req.body.description;
       correctProj.project_url=req.body.project_url;
@@ -147,7 +126,7 @@ app.put("/api/profile/:profile_id/projects/:_id",function update(req, res) {
   });
 });
 
-// End Point 8 - Add New vacation under planning
+// End Point 6 - Add New vacation under planning
 
 app.post('/api/profile/:profile_id/vacation',function(req,res){
   console.log(JSON.stringify(req.body));
@@ -161,15 +140,6 @@ app.post('/api/profile/:profile_id/vacation',function(req,res){
   })
 })
 });
-
-//End Point 9 - Get All Holiday destinations
-
-app.get('/api/profile/:profile_id/vacation',function(req,res){
-  db.Profile.find({},function(err,vacation){
-    if(err){ console.log("Get All projects Method Error",err);}
-    res.json(vacation);
-  })
-})
 
 /**********
  * SERVER *
